@@ -12,7 +12,6 @@ const nextConfig = {
 }
 
 const withMDX = createMDX({
-  // 可以在這裡添加markdown插件
 })
 
 export default withMDX(nextConfig)
