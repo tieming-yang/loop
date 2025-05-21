@@ -19,7 +19,8 @@ type NovelPageProps = {
 }
 
 export async function generateMetadata({ params }: NovelPageProps): Promise<Metadata> {
-  const novel = await getNovel(params.slug)
+  const { slug } = await params
+  const novel = await getNovel(slug)
 
   if (!novel) {
     return {
@@ -39,21 +40,23 @@ export async function generateStaticParams() {
 }
 
 export default async function NovelPage({ params, searchParams }: NovelPageProps) {
-  const novel = await getNovel(params.slug)
+  const { slug } = await params
+  const { chapter } = await searchParams
+  const novel = await getNovel(slug)
 
   if (!novel) {
     notFound()
   }
 
   // If chapter is specified in the URL, render the chapter content
-  if (searchParams.chapter) {
-    const chapterId = searchParams.chapter
-    const chapter = novel.chapters.find((ch) => ch.id === chapterId)
+  if (chapter) {
+    const chapterId = chapter
+    const foundChapter =  novel.chapters.find((ch) => ch.id === chapterId)
 
-    if (chapter) {
+    if (foundChapter) {
       try {
         // Get the content from the file
-        const rawContent = await getNovelChapterContent(params.slug, chapterId)
+        const rawContent = await getNovelChapterContent(slug, chapterId)
 
         if (!rawContent || rawContent === "Content could not be loaded. Please try again later.") {
           throw new Error("Failed to load content")
@@ -68,22 +71,22 @@ export default async function NovelPage({ params, searchParams }: NovelPageProps
         const nextChapter =
           currentChapterIndex < novel.chapters.length - 1 ? novel.chapters[currentChapterIndex + 1] : null
 
-        const handlePrevPage = prevChapter ? () => `/works/novels/${params.slug}?chapter=${prevChapter.id}` : undefined
+        const handlePrevPage = prevChapter ? () => `/works/novels/${slug}?chapter=${prevChapter.id}` : undefined
 
-        const handleNextPage = nextChapter ? () => `/works/novels/${params.slug}?chapter=${nextChapter.id}` : undefined
+        const handleNextPage = nextChapter ? () => `/works/novels/${slug}?chapter=${nextChapter.id}` : undefined
 
         return (
           <main className="min-h-screen bg-gray-950">
             <Reader
               content={content}
-              chapterTitle={chapter.title}
+              chapterTitle={foundChapter.title}
               totalPages={novel.chapters.length}
               currentPage={currentChapterIndex + 1}
-              contentPath={chapter.contentPath}
-              chapterId={chapter.id}
+              contentPath={foundChapter.contentPath}
+              chapterId={foundChapter.id}
               onPrevPage={handlePrevPage ? () => (window.location.href = handlePrevPage()) : undefined}
               onNextPage={handleNextPage ? () => (window.location.href = handleNextPage()) : undefined}
-              returnUrl={`/works/novels/${params.slug}`}
+              returnUrl={`/works/novels/${slug}`}
             />
           </main>
         )
@@ -97,7 +100,7 @@ export default async function NovelPage({ params, searchParams }: NovelPageProps
                 We're having trouble loading this content. Please try again later or return to the novel page.
               </p>
               <Button asChild>
-                <Link href={`/works/novels/${params.slug}`}>Return to Novel</Link>
+                <Link href={`/works/novels/${slug}`}>Return to Novel</Link>
               </Button>
             </div>
           </main>
