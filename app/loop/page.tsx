@@ -1,13 +1,25 @@
-import type { Metadata } from "next"
+// app/ring/page.tsx  (Server Component)
+import Loop from "@/data/loop";
+import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "環",
-  description: "科幻小說《環》",
-}
 
 export default async function LoopPage() {
+  const chapters = await Loop.getAllManuScripts()
+  console.log("server chapters", chapters);
 
-  return <p>Hi</p>
+  if (!chapters || chapters.length === 0) {
+    return <p>No chapters found</p>;
+  }
+
+   return (
+    <ul>
+      {chapters.map((chap) => (
+        <li key={chap.id}>
+          <Link href={`/ring/${chap.id}`}>
+            {chap.title}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
 }
-
-
