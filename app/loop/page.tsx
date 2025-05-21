@@ -1,7 +1,5 @@
-// app/ring/page.tsx  (Server Component)
 import Loop from "@/data/loop";
 import Link from "next/link";
-
 
 export default async function LoopPage() {
   const chapters = await Loop.getAllManuScripts()
