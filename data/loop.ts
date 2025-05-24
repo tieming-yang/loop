@@ -49,24 +49,31 @@ const Loop = {
     }
   },
 
-  getManuScriptById: async (id: string) => {
+  getManuScriptContentById: async (id: string) => {
     assertIsDefined(id, "id is not defined");
     assertIsDefined(Loop.dbID, "Loop.dbID is not defined");
 
     try {
-      const { results } = await notion.databases.query({
-        database_id: process.env.WIKI_DB_ID!,
-        filter: {
-          property: "ID",
-          rich_text: {
-            equals: id,
-          },
-        },
-      });
-      return results[0];
+      const page = await notion.pages.retrieve({ page_id: id });
+      console.log("Retrieved page:", page);
+      return page;
     } catch (error) {
       console.error("Error fetching wiki entry:", error);
       throw new Error("Failed to fetch wiki entry");
+    }
+  },
+
+  isPageInDB: async (id: string): Promise<boolean> => {
+    try {
+      const page = await notion.pages.retrieve({ page_id: id });
+
+      return (
+        page.parent.type === "database_id" &&
+        page.parent.database_id === DB_ID
+      );
+    } catch (err) {
+      console.error("Notion retrieve error:", err);
+      return false;
     }
   },
 };
