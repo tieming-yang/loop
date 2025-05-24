@@ -56,9 +56,7 @@ const Loop = {
 
     try {
       const n2m = new NotionConverter(notion);
-      const result = await n2m.convert(id, {
-        withRenderer: "html",
-      });
+      const result = await n2m.convert(id);
 
       console.log("Retrieved page:", result);
       return result;
