@@ -4,25 +4,20 @@ import { PageObjectResponse } from "@notionhq/client";
 import Link from "next/link";
 
 export default async function LoopPage() {
-  const chapters = await Loop.getAllManuScripts();
-  console.log("server chapters", chapters);
+  const manuScripts = await Loop.getAllManuScripts();
 
-  if (!chapters || chapters.length === 0) {
+  if (!manuScripts || manuScripts.length === 0) {
     return <p>No chapters found</p>;
   }
 
   return (
     <ul>
-      {chapters.map((chap) => {
-        const page = chap as PageObjectResponse;
-        const id = page.id;
-        const title = page.properties.Title.title[0]?.plain_text;
-        const chapter = page.properties.Chapter.number;
-        const createdTime = Date(page.created_time).toLocaleString();
+      {manuScripts.map((manuScript) => {
+        const { id, title, chapter, createdTime } = manuScript;
 
         return (
-          <li key={page.id}>
-            <Link href={`/loop/${page.id}`}>
+          <li key={id}>
+            <Link href={`/loop/${chapter}-${title}`}>
               {chapter} - {title} - {createdTime}
             </Link>
           </li>
