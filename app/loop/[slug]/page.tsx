@@ -88,8 +88,7 @@ export default async function ChapterPage({ params }: ChapterPageProps) {
       <main className="min-h-screen bg-gray-950/50">
         <Suspense fallback={<Loading />}>
           <Reader
-            content={htmlContent}
-            manuScripts={manuScripts}
+            content={htmlContent as string}
             chapterTitle={title}
             totalPages={manuScripts.length}
             currentPage={currentChapterIndex + 1}
