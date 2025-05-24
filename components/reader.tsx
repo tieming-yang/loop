@@ -139,10 +139,10 @@ export default function Reader({
   }, []); // Only run once on mount
 
   const themeStyles = {
-    light: "bg-white text-gray-900",
-    sepia: "bg-amber-50 text-amber-900",
-    dark: "bg-gray-900 text-gray-100",
-    black: "bg-black text-gray-100",
+    light: "bg-white/50 text-gray-900",
+    sepia: "bg-amber-50/50 text-amber-900",
+    dark: "bg-gray-900/50 text-gray-100",
+    black: "bg-black/50 text-gray-100",
     custom: "",
   };
 
