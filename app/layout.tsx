@@ -14,6 +14,8 @@ import Footer from "@/components/footer";
 import { author } from "@/data/author";
 import { SnowBackground } from "@/components/snow-background";
 import { SnowInitializer } from "@/components/snow-initializer";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -79,7 +81,7 @@ export default function RootLayout({
 
         {/* Main content with higher z-index */}
         <div className="relative z-10">
-          {children}
+          <Suspense fallback={<Loading />}>{children}</Suspense>
           <Footer />
         </div>
 
