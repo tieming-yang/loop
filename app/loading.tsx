@@ -4,7 +4,7 @@ export default function Loading() {
       <div className="flex flex-col items-center gap-4">
         <div className="relative h-16 w-16">
           <div className="absolute inset-0 rounded-full border-t-2 border-[#7ec0cd] animate-spin"></div>
-          <div className="absolute inset-2 rounded-full border-r-2 border-[#7ec0cd]/50 animate-spin animate-reverse"></div>
+          <div className="absolute inset-2 rounded-full border-r-2 border-[#7ec0cd]/50 animate-spin"></div>
           <div className="absolute inset-4 rounded-full border-b-2 border-[#7ec0cd]/30 animate-spin"></div>
         </div>
 
@@ -14,6 +14,5 @@ export default function Loading() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
