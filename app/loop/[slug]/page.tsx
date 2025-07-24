@@ -14,12 +14,12 @@ import { Suspense } from "react";
 import Loading from "@/app/loading";
 
 interface ChapterPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     chapter: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
